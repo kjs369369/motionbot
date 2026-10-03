@@ -1,13 +1,17 @@
 ---
-name: mbot-embed
-description: AICLab의 안내 챗봇 위젯(mbot — 기본 캐릭터는 케이프를 두른 May Hero 펫. 화면을 달리고 점프하고, 카드·제목 위에 올라앉고, 끌어서 던질 수 있고, 스크롤에 반응하며 팁을 준다. 모바일에서는 아래쪽 가장자리를 순찰. 다른 Codex pet 캐릭터·3D 마우스봇 로봇·말풍선 이미지로도 바꿀 수 있음)을 어떤 웹사이트에든 붙이는 워크플로. 대상 사이트를 분석해 그 사이트 전용 지식 파일(kb)을 만들고, 사이트 톤에 맞는 강조색·위치를 정하고, 실제 페이지에 주입해 검증한 뒤, 플랫폼(Next.js·ChatGPT Sites/vinext·Vite/React·Vue/Nuxt·SvelteKit·Astro·정적 HTML·워드프레스·티스토리·아임웹/윅스/카페24·Webflow·Framer·Shopify 등)에 맞는 방식으로 삽입한다. 사용자가 "챗봇 붙여줘", "안내봇 넣어줘", "그 로봇 챗봇을 ○○ 사이트에도", "mbot", "마우스봇", "May Hero", "메이 히어로", "캐릭터가 돌아다니게", "펫을 사이트에", "Codex pet을 웹에", "GPT 안내봇처럼", "사이트에 안내 챗봇 위젯", "돌아다니는 챗봇", "FAQ 봇 달아줘"라고 하거나 사이트 URL을 주며 챗봇·안내 위젯·움직이는 캐릭터를 원하면 반드시 이 스킬을 쓴다. AI 서버가 필요한 진짜 대화형 챗봇(LLM API 연동) 구축이나 카카오·슬랙 같은 메신저 봇은 대상이 아니다.
+name: motionbot
+description: 모션챗봇(Motionbot) — AICLab 김진수의 시그니처 프로그램인 움직이는 캐릭터 안내 챗봇 위젯(옛 이름 mbot. 기본 캐릭터는 케이프를 두른 May Hero 펫. 화면을 달리고 점프하고, 카드·제목 위에 올라앉고, 끌어서 던질 수 있고, 스크롤에 반응하며 팁을 준다. 모바일에서는 아래쪽 가장자리를 순찰. 다른 Codex pet 캐릭터·3D 마우스봇 로봇·말풍선 이미지로도 바꿀 수 있음)을 어떤 웹사이트에든 붙이는 워크플로. 대상 사이트를 분석해 그 사이트 전용 지식 파일(kb)을 만들고, 사이트 톤에 맞는 강조색·위치를 정하고, 실제 페이지에 주입해 검증한 뒤, 플랫폼(Next.js·ChatGPT Sites/vinext·Vite/React·Vue/Nuxt·SvelteKit·Astro·정적 HTML·워드프레스·티스토리·아임웹/윅스/카페24·Webflow·Framer·Shopify 등)에 맞는 방식으로 삽입한다. 사용자가 "챗봇 붙여줘", "안내봇 넣어줘", "그 로봇 챗봇을 ○○ 사이트에도", "모션챗봇", "motionbot", "mbot", "마우스봇", "May Hero", "메이 히어로", "캐릭터가 돌아다니게", "펫을 사이트에", "Codex pet을 웹에", "GPT 안내봇처럼", "사이트에 안내 챗봇 위젯", "돌아다니는 챗봇", "FAQ 봇 달아줘"라고 하거나 사이트 URL을 주며 챗봇·안내 위젯·움직이는 캐릭터를 원하면 반드시 이 스킬을 쓴다. AI 서버가 필요한 진짜 대화형 챗봇(LLM API 연동) 구축이나 카카오·슬랙 같은 메신저 봇은 대상이 아니다.
 ---
 
-# mbot-embed — May Hero 펫 안내 챗봇 삽입 (위젯 v2)
+# 모션챗봇 (Motionbot) — 움직이는 캐릭터 안내 챗봇 삽입 (위젯 v2)
+
+> 모션챗봇은 AICLab 김진수의 시그니처 프로그램이다. 소개: https://motionbot.aiclab.kr
+> 위젯 파일은 `motionbot.js`. 옛 주소 `widgets/mbot.js`는 기존 삽입 사이트 호환용 사본으로 계속 제공한다.
+> 3D 로봇 모드(`data-character="robot"`)는 스승님의 오픈소스 마우스봇을 바탕으로 한 것이라 `NOTICE.md`의 출처 표기를 유지한다.
 
 기본 캐릭터는 **May Hero 펫**이다(스프라이트 `assets/pets/may-hero.webp`, 중앙 사본 `https://design.aiclab.kr/widgets/pets/may-hero.webp`). 아무 설정 없이도 May Hero가 나오고, `data-character="robot"`이면 3D 로봇, `data-avatar`면 말풍선 캐릭터.
 
-`assets/mbot.js` 하나가 위젯 전부다. Shadow DOM 안에 그려지므로 대상 사이트 CSS와 서로 간섭하지 않고,
+`assets/motionbot.js` 하나가 위젯 전부다. Shadow DOM 안에 그려지므로 대상 사이트 CSS와 서로 간섭하지 않고,
 사이트마다 달라지는 것은 **지식 파일(kb) 하나**와 **`data-` 속성 몇 개**뿐이다. 이 스킬의 일은 그 둘을 대상 사이트에 꼭 맞게 만드는 것이다.
 
 위젯은 AI 서버 없이 키워드로 답한다(FAQ 매칭 + 항목 검색). 그래서 답의 품질은 전적으로 kb의 정확성에 달려 있다 — 사이트에 실제로 적힌 내용만 쓰고, 모르는 것은 지어내지 말 것.
@@ -52,7 +56,7 @@ description: AICLab의 안내 챗봇 위젯(mbot — 기본 캐릭터는 케이�
 ### 5. 삽입
 `references/platforms.md`에서 대상 플랫폼 항목을 읽고 그대로 따른다. 공통 형태:
 ```html
-<script src="<호스트>/widgets/mbot.js"
+<script src="<호스트>/widgets/motionbot.js"
         data-kb="<호스트>/widgets/kb/<site>.kb.js"
         data-name="○○ 안내봇"
         data-bottom="24" data-right="20" defer></script>
@@ -89,16 +93,16 @@ description: AICLab의 안내 챗봇 위젯(mbot — 기본 캐릭터는 케이�
 kb에 선택 항목 `endTip`(페이지 끝 한마디), `dropTips`(던진 뒤 한마디 배열)를 넣을 수 있다.
 
 ### 호스트 사이트 API
-위젯이 뜬 뒤 `window.aiclabMbot`으로 특정 순간에 캐릭터를 움직일 수 있다:
+위젯이 뜬 뒤 `window.motionbot`으로 특정 순간에 캐릭터를 움직일 수 있다:
 ```js
-aiclabMbot.say('신청 완료! 메일을 확인하세요', 4000);  // 말풍선
-aiclabMbot.act('jumping');                           // 동작 한 번 (idle·waving·jumping·failed·waiting·running·review)
-aiclabMbot.perch(document.querySelector('#pricing')); // 그 요소 위로 점프해 올라앉기 (인자 없으면 아무 요소)
-aiclabMbot.home(); aiclabMbot.open();                // 집으로 / 안내 창 열기
+motionbot.say('신청 완료! 메일을 확인하세요', 4000);  // 말풍선
+motionbot.act('jumping');                           // 동작 한 번 (idle·waving·jumping·failed·waiting·running·review)
+motionbot.perch(document.querySelector('#pricing')); // 그 요소 위로 점프해 올라앉기 (인자 없으면 아무 요소)
+motionbot.home(); motionbot.open();                // 집으로 / 안내 창 열기
 ```
 예: 폼 제출 성공 시 `act('jumping')`+`say()`, 가격표로 스크롤 안내할 때 `perch()`.
 
-`mbot.js`를 배포할 때는 terser로 압축하되 `/*!` 저작권 주석은 유지한다(`scripts/minify.mjs`).
+`motionbot.js`를 배포할 때는 terser로 압축하되 `/*!` 저작권 주석은 유지한다(`scripts/minify.mjs`).
 
 ### 6. 배포 후 확인
 - 실제 주소에서 위젯이 뜨는지 확인한다. 위젯 호스트가 봇 차단(design.aiclab.kr처럼)을 하면 헤드리스 브라우저 요청이 403이 나므로, 테스트 때만 `page.route`로 일반 크롬 UA를 붙여 요청한다(`references/testing.md` 2절).
@@ -106,5 +110,5 @@ aiclabMbot.home(); aiclabMbot.open();                // 집으로 / 안내 창 �
 
 ## 운영
 - 대상 사이트 내용이 바뀌면 kb만 갱신한다. 중앙 호스팅이면 재배포만으로 반영(캐시 5분).
-- 위젯 본체를 고칠 때는 이 스킬의 `assets/mbot.js`와 중앙 호스트의 `src/widgets/mbot.js`를 함께 맞춘다.
+- 위젯 본체를 고칠 때는 이 스킬의 `assets/motionbot.js`와 중앙 호스트의 `src/widgets/motionbot.js`를 함께 맞춘다.
 - 진짜 대화형(LLM)으로 키우려면 서버 함수 하나를 두고 키는 서버에만 — 이 스킬 범위 밖이므로 사용자에게 별도 작업으로 제안만 한다.

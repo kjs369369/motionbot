@@ -8,7 +8,7 @@ Playwright `page.route`로 가짜 https 주소를 로컬 파일에 연결한다 
 
 ```js
 async (page) => {
-  const base = 'C:/path/to/widgets/';           // mbot.js 와 kb/ 가 있는 로컬 폴더
+  const base = 'C:/path/to/widgets/';           // motionbot.js 와 kb/ 가 있는 로컬 폴더
   await page.route('https://widget.test/**', async (route) => {
     const p = new URL(route.request().url()).pathname.replace(/^\//, '');
     await route.fulfill({ status: 200, contentType: 'application/javascript; charset=utf-8', path: base + p });
@@ -16,7 +16,7 @@ async (page) => {
   await page.goto('https://대상사이트/');
   await page.evaluate(() => {
     const s = document.createElement('script');
-    s.src = 'https://widget.test/mbot.js';
+    s.src = 'https://widget.test/motionbot.js';
     s.dataset.kb = 'https://widget.test/kb/site.kb.js';
     s.dataset.name = '○○ 안내봇'; s.dataset.accent = '#hex'; s.dataset.bottom = '24';
     document.body.appendChild(s);
@@ -61,11 +61,11 @@ await page.route('https://design.aiclab.kr/**', async (route) => {
 });
 ```
 
-curl 확인: `curl -s -o /dev/null -w '%{http_code} %{content_type}\n' -A "Mozilla/5.0 ... Chrome/141" -H 'Accept-Language: ko' <호스트>/widgets/mbot.js` → `200 application/javascript`.
+curl 확인: `curl -s -o /dev/null -w '%{http_code} %{content_type}\n' -A "Mozilla/5.0 ... Chrome/141" -H 'Accept-Language: ko' <호스트>/widgets/motionbot.js` → `200 application/javascript`.
 
 ## 3. 움직임 확인 (v2)
 헤드리스는 `requestAnimationFrame`이 느려서 이동이 몇 초씩 걸린다. 위치가 목표로 수렴하는지만 보고, 여유 있게 기다린다.
-`window.aiclabMbot` API로 무작위 산책을 기다리지 않고 바로 시험한다.
+`window.motionbot` API로 무작위 산책을 기다리지 않고 바로 시험한다.
 
 ```js
 async (page) => {
@@ -73,7 +73,7 @@ async (page) => {
     const b = r.querySelector('.btn').getBoundingClientRect(); return { x: b.left + b.width / 2, y: b.top + b.height / 2, bottom: b.bottom,
       tip: r.querySelector('.tip.on') ? r.querySelector('.tip').textContent : '' }; });
   // ① 올라앉기: 펫 발(bottom)이 요소 윗변 근처(±16px)
-  await page.evaluate(() => aiclabMbot.perch(document.querySelector('h2')));
+  await page.evaluate(() => motionbot.perch(document.querySelector('h2')));
   await page.waitForTimeout(3500);
   const perched = await pet(), top = await page.evaluate(() => document.querySelector('h2').getBoundingClientRect().top);
   // ② 스크롤 따라가기: 조금 내리면 같이 이동, 많이 내리면 뛰어내려 집으로

@@ -1,4 +1,6 @@
-# aiclab-mbot — May Hero 펫 안내 챗봇
+# 모션챗봇 (Motionbot)
+
+> AICLab 김진수의 시그니처 프로그램 — 화면을 움직이는 캐릭터 안내 챗봇. 소개: https://motionbot.aiclab.kr
 
 웹사이트 어디에든 **움직이는 캐릭터 안내 챗봇**을 붙이는 Claude Code 플러그인입니다.
 기본 캐릭터는 케이프를 두른 **May Hero**([may-hero-codex-pet](https://github.com/kjs369369/may-hero-codex-pet))입니다.
@@ -13,26 +15,26 @@
 
 ### Claude Code
 ```
-/plugin marketplace add kjs369369/aiclab-mbot
-/plugin install aiclab-mbot@aiclab
+/plugin marketplace add kjs369369/motionbot
+/plugin install motionbot@aiclab
 ```
-설치 후 "이 사이트에 안내 챗봇 붙여줘 https://..."처럼 말하면 `mbot-embed` 스킬이 동작합니다.
+설치 후 "이 사이트에 안내 챗봇 붙여줘 https://..."처럼 말하면 `motionbot` 스킬이 동작합니다.
 
 ### Codex · 다른 에이전트
-`skills/mbot-embed` 폴더를 에이전트의 스킬 폴더(예: `~/.codex/skills/mbot-embed`)에 복사합니다. SKILL.md 형식이라 그대로 읽힙니다.
+`skills/motionbot` 폴더를 에이전트의 스킬 폴더(예: `~/.codex/skills/motionbot`)에 복사합니다. SKILL.md 형식이라 그대로 읽힙니다.
 
 ### 사람이 직접 붙일 때 (에이전트 없이)
 ```html
-<script src="https://design.aiclab.kr/widgets/mbot.js"
+<script src="https://design.aiclab.kr/widgets/motionbot.js"
         data-kb="/widgets/kb/site.kb.js" data-name="○○ 안내봇" defer></script>
 ```
-`kb` 작성법은 `skills/mbot-embed/references/kb-guide.md`, 플랫폼별 위치는 `references/platforms.md`를 보세요.
+`kb` 작성법은 `skills/motionbot/references/kb-guide.md`, 플랫폼별 위치는 `references/platforms.md`를 보세요.
 
 ## 구성
 ```
-skills/mbot-embed/
+skills/motionbot/
   SKILL.md                 워크플로 (분석 → kb → 주입 검증 → 플랫폼 삽입 → 배포 확인)
-  assets/mbot.js           위젯 본체 (Shadow DOM, 의존성 없음)
+  assets/motionbot.js      위젯 본체 (Shadow DOM, 의존성 없음)
   assets/pets/may-hero.webp  May Hero 스프라이트 (120x130 칸, 9행)
   assets/kb-template.js    지식 파일 틀
   references/              kb 작성법 · 플랫폼별 삽입 · 테스트
@@ -41,7 +43,10 @@ skills/mbot-embed/
 ```
 
 ## 관리 (작성자용)
-스킬 원본은 `C:\project\skills\dev-workflow\mbot-embed`입니다. 원본을 고친 뒤 `./sync.sh`로 이 저장소에 복사하고, `plugin.json`·`marketplace.json`의 버전을 함께 올려 커밋합니다.
+스킬 원본은 `C:\project\skills\dev-workflow\motionbot`입니다. 원본을 고친 뒤 `./sync.sh`로 이 저장소에 복사하고, `plugin.json`·`marketplace.json`의 버전을 함께 올려 커밋합니다.
+
+## 출처 표기
+3D 로봇 모드는 스승님의 오픈소스 마우스봇을 바탕으로 합니다. 자세한 내용은 `skills/motionbot/NOTICE.md`를 보세요.
 
 ## 라이선스
 © 2025-2026 AICLab 김진수. All rights reserved. 무단 복제·재배포를 금지합니다. 자세한 내용은 [LICENSE](LICENSE)를 보세요.

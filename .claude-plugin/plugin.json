@@ -1,13 +1,24 @@
 {
-  "name": "aiclab-mbot",
-  "version": "2.0.0",
-  "description": "May Hero 펫 안내 챗봇 위젯을 어떤 웹사이트에든 붙인다 — 화면을 달리고 점프하고, 카드 위에 올라앉고, 끌어서 던질 수 있는 캐릭터 + 사이트 전용 FAQ 지식 파일 + 플랫폼별 삽입 가이드",
+  "name": "motionbot",
+  "version": "2.1.0",
+  "description": "모션챗봇(Motionbot) — AICLab 김진수의 시그니처 프로그램. 화면을 달리고 점프하고, 카드 위에 올라앉고, 끌어서 던질 수 있는 캐릭터 안내 챗봇을 어떤 웹사이트에든 붙인다 (사이트 전용 FAQ 지식 파일 + 플랫폼별 삽입 가이드)",
   "author": {
     "name": "AICLab 김진수",
     "url": "https://www.aiclab.kr"
   },
-  "homepage": "https://design.aiclab.kr",
-  "repository": "https://github.com/kjs369369/aiclab-mbot",
+  "homepage": "https://motionbot.aiclab.kr",
+  "repository": "https://github.com/kjs369369/motionbot",
   "license": "UNLICENSED",
-  "keywords": ["chatbot", "widget", "mascot", "codex-pet", "may-hero", "sprite", "embed", "korean"]
+  "keywords": [
+    "motionbot",
+    "모션챗봇",
+    "chatbot",
+    "widget",
+    "mascot",
+    "codex-pet",
+    "may-hero",
+    "sprite",
+    "embed",
+    "korean"
+  ]
 }

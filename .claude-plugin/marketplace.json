@@ -9,10 +9,10 @@
   },
   "plugins": [
     {
-      "name": "aiclab-mbot",
+      "name": "motionbot",
       "source": "./",
-      "description": "May Hero 펫 안내 챗봇 위젯 — 움직이는 캐릭터를 모든 웹 플랫폼에 삽입",
-      "version": "2.0.0",
+      "description": "모션챗봇(Motionbot) — 움직이는 캐릭터 안내 챗봇을 모든 웹 플랫폼에 삽입",
+      "version": "2.1.0",
       "category": "frontend"
     }
   ]

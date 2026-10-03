@@ -1,6 +1,6 @@
 # 플랫폼별 삽입 방법
 
-자체 호스팅이면 `assets/mbot.js`(압축본 권장), `kb/<site>.kb.js`, `assets/pets/may-hero.webp`(→ `widgets/pets/`)를 사이트 정적 폴더의 `widgets/` 아래에 두고 주소를 `/widgets/...`로 쓴다. 펫까지 자체 호스팅하려면 `data-sprite="/widgets/pets/may-hero.webp" data-sprite-cell="120x130"`을 함께 넣는다(생략하면 펫 이미지만 design.aiclab.kr에서 불러온다).
+자체 호스팅이면 `assets/motionbot.js`(압축본 권장), `kb/<site>.kb.js`, `assets/pets/may-hero.webp`(→ `widgets/pets/`)를 사이트 정적 폴더의 `widgets/` 아래에 두고 주소를 `/widgets/...`로 쓴다. 펫까지 자체 호스팅하려면 `data-sprite="/widgets/pets/may-hero.webp" data-sprite-cell="120x130"`을 함께 넣는다(생략하면 펫 이미지만 design.aiclab.kr에서 불러온다).
 중앙 호스팅이면 `https://design.aiclab.kr/widgets/...`를 쓴다. 아래 예시는 `<SRC>`, `<KB>`로 표기.
 
 ## 목차
@@ -23,10 +23,10 @@
 ```tsx
 import Script from "next/script";
 // ...
-<Script id="aiclab-mbot" src="/widgets/mbot.js" strategy="afterInteractive"
+<Script id="motionbot" src="/widgets/motionbot.js" strategy="afterInteractive"
   data-kb="/widgets/kb/site.kb.js" data-name="○○ 안내봇" data-accent="#hex" data-roam="on" data-bottom="24" />
 ```
-`next/script`는 `data-` 속성을 그대로 스크립트 태그에 넘긴다. 위젯은 `document.currentScript`가 없어도 `script[src*="mbot.js"]`로 자기 태그를 찾는다.
+`next/script`는 `data-` 속성을 그대로 스크립트 태그에 넘긴다. 위젯은 `document.currentScript`가 없어도 `script[src*="motionbot.js"]`로 자기 태그를 찾는다.
 
 ## 2. ChatGPT Sites / vinext
 판별: README에 vinext·"Sites Lifecycle", 커밋이 전부 "Update Site source", Cloudflare 서버 + `X-Vinext-*` Vary 헤더.
@@ -35,7 +35,7 @@ import Script from "next/script";
 app/layout.tsx 의 <body> 안 맨 끝(</body> 바로 위)에 아래 스크립트를 추가하고 게시해줘. 다른 코드는 건드리지 마.
 
 import Script from "next/script";
-<Script id="aiclab-mbot" src="<SRC>" strategy="afterInteractive"
+<Script id="motionbot" src="<SRC>" strategy="afterInteractive"
   data-kb="<KB>" data-name="○○ 안내봇" data-accent="#hex" data-roam="on" data-bottom="24" />
 
 만약 next/script 가 동작하지 않으면 같은 속성으로 일반 <script src="..." defer> 태그를 써줘.
@@ -46,7 +46,7 @@ import Script from "next/script";
 `pages/_app.tsx`에서 `next/script`를 1번과 같이 쓰거나 `pages/_document.tsx`의 `<body>` 끝에 일반 `<script defer>`.
 
 ## 4. Vite / React SPA
-`index.html`의 `</body>` 직전에 일반 `<script src="/widgets/mbot.js" ... defer>`. 파일은 `public/widgets/`.
+`index.html`의 `</body>` 직전에 일반 `<script src="/widgets/motionbot.js" ... defer>`. 파일은 `public/widgets/`.
 React 컴포넌트 안에서 넣지 말 것 — 라우트 전환마다 다시 마운트될 수 있다(위젯은 중복 실행을 막지만 굳이 그럴 이유가 없다).
 
 ### Lovable · Bolt · v0 로 만든 Vite 프로젝트
@@ -81,9 +81,9 @@ React 컴포넌트 안에서 넣지 말 것 — 라우트 전환마다 다시 �
 ## 11. Vue · Nuxt · SvelteKit · Astro · Remix
 공통 원칙: **앱 컴포넌트 안이 아니라 HTML 셸의 `</body>` 직전**에 한 번만 넣는다(라우트 전환에도 위젯이 유지됨). 파일은 정적 폴더(`public/` 또는 `static/`)의 `widgets/`.
 - Vue(Vite): `index.html` — 4번과 같다.
-- Nuxt 3: `nuxt.config.ts` → `app: { head: { script: [{ src: '/widgets/mbot.js', defer: true, tagPosition: 'bodyClose', 'data-kb': '/widgets/kb/site.kb.js', 'data-name': '○○ 안내봇' }] } }`
+- Nuxt 3: `nuxt.config.ts` → `app: { head: { script: [{ src: '/widgets/motionbot.js', defer: true, tagPosition: 'bodyClose', 'data-kb': '/widgets/kb/site.kb.js', 'data-name': '○○ 안내봇' }] } }`
 - SvelteKit: `src/app.html`의 `%sveltekit.body%` 뒤. 파일은 `static/widgets/`.
-- Astro: 공통 레이아웃(`src/layouts/*.astro`)의 `</body>` 직전에 `<script is:inline src="/widgets/mbot.js" data-kb="..." defer></script>` (`is:inline` 없으면 Astro가 번들링해 `data-` 속성이 사라진다).
+- Astro: 공통 레이아웃(`src/layouts/*.astro`)의 `</body>` 직전에 `<script is:inline src="/widgets/motionbot.js" data-kb="..." defer></script>` (`is:inline` 없으면 Astro가 번들링해 `data-` 속성이 사라진다).
 - Remix / React Router: `app/root.tsx`의 `<Scripts />` 뒤에 일반 `<script>` 태그.
 
 ## 12. Webflow · Framer · Shopify · 그 밖의 빌더

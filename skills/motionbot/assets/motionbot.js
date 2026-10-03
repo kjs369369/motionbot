@@ -1,9 +1,10 @@
 /*!
- * AICLab mbot widget v2 — May Hero 펫 안내 챗봇 (어느 사이트에나 삽입)
+ * 모션챗봇 Motionbot v2 — 화면을 움직이는 캐릭터 안내 챗봇 (어느 사이트에나 삽입)
  * © 2025-2026 AICLab 김진수. All rights reserved. 무단 복제·재배포 금지.
+ * 모션챗봇(Motionbot)은 AICLab 김진수의 시그니처 프로그램입니다. https://motionbot.aiclab.kr
  *
  * 사용법
- *   <script src="https://design.aiclab.kr/widgets/mbot.js"
+ *   <script src="https://design.aiclab.kr/widgets/motionbot.js"
  *           data-kb="https://design.aiclab.kr/widgets/kb/astra.kb.js"
  *           data-name="GPT 안내봇" data-accent="#dec18a"
  *           data-roam="on" data-bottom="24" data-right="20"
@@ -15,9 +16,10 @@
  *   data-accent 를 생략하거나 "auto" 로 두면 사이트 포인트 컬러(theme-color → CSS 변수 → 대표 버튼 배경)를 자동 감지한다.
  *   움직임(v2): data-roam="on|full|compact|off" (on = 큰 화면+마우스는 full, 모바일·터치는 compact),
  *     data-perch="off" 요소 위 올라앉기 끄기, data-drag="off" 끌어서 던지기 끄기.
- *   API: window.aiclabMbot.say(text, ms) / act(state) / perch(el) / home() / open()
+ *   API: window.motionbot.say(text, ms) / act(state) / perch(el) / home() / open()   (옛 이름 window.aiclabMbot 도 동작)
  *
  * 지식 파일(kb)은 window.AICLAB_MBOT_KB = { greeting, quick, tips, faq, items } 를 정의하는 스크립트.
+ * 옛 주소 widgets/mbot.js 는 같은 파일의 사본으로 계속 제공한다(기존 삽입 사이트 호환).
  * 화면은 Shadow DOM 안에 그려서 호스트 사이트 스타일과 서로 간섭하지 않는다.
  */
 (function () {
@@ -25,7 +27,7 @@
   if (window.__AICLAB_MBOT__) return;
   window.__AICLAB_MBOT__ = true;
 
-  var me = document.currentScript || document.querySelector('script[src*="mbot.js"]');
+  var me = document.currentScript || document.querySelector('script[src*="motionbot.js"],script[src*="mbot.js"]');
   // 기본 제공 펫 (Codex pet 형식, 62.5% 축소본)
   var PETS = {
     'may-hero': { src: 'https://design.aiclab.kr/widgets/pets/may-hero.webp', cell: '120x130' },
@@ -187,7 +189,7 @@
     '<div class="log" aria-live="polite"></div><div class="quick"></div>' +
     '<form class="fm"><input type="text" aria-label="질문" placeholder="궁금한 것을 물어보세요" autocomplete="off">' +
     '<button type="submit" aria-label="보내기"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button></form>' +
-    '<p class="credit">powered by <a href="https://design.aiclab.kr" target="_blank" rel="noopener">AICLab</a></p>' +
+    '<p class="credit"><a href="https://motionbot.aiclab.kr" target="_blank" rel="noopener">모션챗봇</a> by AICLab</p>' +
     '</div>' +
     '<div class="walker"><span class="tip"></span>' +
     '<button type="button" class="btn" aria-label="' + esc(CFG.name) + ' 열기" aria-expanded="false">' +
@@ -198,7 +200,7 @@
 
   function mount() {
     var host = document.createElement('div');
-    host.id = 'aiclab-mbot';
+    host.id = 'aiclab-mbot';   // 호환을 위해 id 유지 (모션챗봇)
     host.setAttribute('data-version', '2');
     document.body.appendChild(host);
     var root = host.attachShadow({ mode: 'open' });
@@ -458,8 +460,8 @@
       btn.addEventListener('click', function (e) { if (Date.now() < noClick) { e.stopImmediatePropagation(); e.preventDefault(); } }, true);
     }
 
-    // 호스트 사이트용 API: 특정 순간에 말풍선·동작을 일으킬 때 (예: 폼 제출 성공 → aiclabMbot.act('jumping'))
-    window.aiclabMbot = {
+    // 호스트 사이트용 API: 특정 순간에 말풍선·동작을 일으킬 때 (예: 폼 제출 성공 → motionbot.act('jumping'))
+    window.motionbot = window.aiclabMbot = {
       say: function (t, ms) { say(String(t), ms); },
       act: function (name, ms) { act(String(name), ms || 1500, true); },
       perch: function (el) {
@@ -563,18 +565,18 @@
     // 첫 등장
     if (mode() === 'compact') {
       setTimeout(function () {
-        if (!panel.hidden || drag) return;
+        if (!panel.hidden || drag || !atHome() || perch) { schedule(16000); return; }   // 이미 API·끌기로 움직였으면 인사 생략
         var hc = homeC(); moveTo(Math.max(BW / 2 + 16, hc.x - Math.min(160, VW() * .4)), hc.y, null, true);
         land = function () { say(KB.hello || ('안녕하세요! 저를 누르면 안내해 드려요'), 3600); };
-        setTimeout(function () { if (!hovering && !drag && panel.hidden) goHome(); }, 5200);
+        setTimeout(function () { if (!hovering && !drag && !perch && panel.hidden) goHome(); }, 5200);
         schedule(16000);
       }, 3000);
     } else if (canRoam()) {
       setTimeout(function () {
-        if (!panel.hidden || drag) return;
+        if (!panel.hidden || drag || !atHome() || perch) { schedule(14000); return; }
         moveTo(VW() * .62, VH() * .58, null, true);
         setTimeout(function () { say(KB.hello || ('안녕하세요! 저를 누르면 안내해 드려요'), 3600); }, 900);
-        setTimeout(function () { if (!hovering && panel.hidden) goHome(); }, 5200);
+        setTimeout(function () { if (!hovering && !drag && !perch && panel.hidden) goHome(); }, 5200);
         schedule(14000);
       }, 3000);
     } else {
