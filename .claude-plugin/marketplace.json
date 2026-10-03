@@ -1,0 +1,19 @@
+{
+  "name": "aiclab",
+  "owner": {
+    "name": "AICLab 김진수",
+    "url": "https://www.aiclab.kr"
+  },
+  "metadata": {
+    "description": "AICLab 플러그인 마켓플레이스"
+  },
+  "plugins": [
+    {
+      "name": "aiclab-mbot",
+      "source": "./",
+      "description": "May Hero 펫 안내 챗봇 위젯 — 움직이는 캐릭터를 모든 웹 플랫폼에 삽입",
+      "version": "2.0.0",
+      "category": "frontend"
+    }
+  ]
+}
